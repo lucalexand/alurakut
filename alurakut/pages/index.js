@@ -1,27 +1,37 @@
-import styled from 'styled-components'
+import Box from '../src/components/Box'
+import MainGrid from '../src/components/MainGrid'
 
-const Title = styled.h1`
-  font-size: 50px;
-  color: ${({ theme }) => theme.colors.primary};
-`
-
-const Box = styled.div`
-  background: #ffffff;
-  border-radius: 8px;
-`;
+function ProfileSidebar() {
+  return (
+    <Box>
+      <img src={`https://github.com/${githubUser}.png`} style={{ borderRadius: '8px' }} />
+    </Box>
+  )
+}
 
 export default function Home() {
+  const githubUser = 'lucalexand';
+
   return (
-    <main>
-      <Box>
-        Imagens
-      </Box>
-      <Box>
-        Bem-vindo
-      </Box>
-      <Box>
-        Comunidades
-      </Box>
-    </main>
+    <>
+      <MainGrid>
+        <div className="profileArea" style={{ gridArea: "profileArea" }}>
+          
+        </div>
+        <div className="welcomeArea" style={{ gridArea: "welcomeArea" }}>
+          <Box>
+            Bem-vindo
+          </Box>
+        </div>
+        <div className="profileRelationsArea" style={{ gridArea: "profileRelationsArea" }}>
+          <Box>
+            Pessoas da Comunidade
+          </Box>
+          <Box>
+            Comunidades
+          </Box>
+        </div>
+      </MainGrid>
+    </>
   )
 }
