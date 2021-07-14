@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
-import ProfileRelationsBoxWrapper from '../src/components/ProfileRelations';
+import {ProfileRelations, ProfileRelationsBoxWrapper} from '../src/components/ProfileRelations/ProfileRelations';
 import {
   AlurakutMenu,
   AlurakutProfileSidebarMenuDefault,
@@ -31,6 +31,28 @@ function ProfileSidebar(prop) {
   );
 }
 
+function ProfileRelationsBox({ title, items}) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {title} <span>({items.length})</span>
+      </h2>
+      {/* <ul>
+        {array.map((itemAtual) => {
+          return (
+            <li key={itemAtual.id}>
+              <a href={`/users/${itemAtual.title}`}>
+                <img src={itemAtual.image} />
+                <span>{itemAtual.title}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul> */}
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
 export default function Home() {
   const githubUser = 'lucalexand';
   const [comunidades, setComunidades] = React.useState([
@@ -41,13 +63,50 @@ export default function Home() {
     },
   ]);
   const pessoasFavoritas = [
-    'juunegreiros',
-    'omariosouto',
-    'peas',
-    'rafaballerini',
-    'marcobrunodev',
-    'felipefialho',
+    {
+      id: new Date().toISOString(),
+      title: 'juunegreiros',
+      image: `https://github.com/juunegreiros.png`
+    },
+    {
+      id: new Date().toISOString(),
+      title: 'omariosouto',
+      image: `https://github.com/omariosouto.png`
+    },
+    {
+      id: new Date().toISOString(),
+      title: 'peas',
+      image: `https://github.com/peas.png`
+    },
+    {
+      id: new Date().toISOString(),
+      title: 'rafaballerini',
+      image: `https://github.com/rafaballerini.png`
+    },
+    {
+      id: new Date().toISOString(),
+      title: 'marcobrunodev',
+      image: `https://github.com/marcobrunodev.png`
+    },
+    {
+      id: new Date().toISOString(),
+      title: 'felipefialho',
+      image: `https://github.com/felipefialho.png`
+    }
   ];
+
+  // const seguidores = await fetch('http://api.github.com/users/peas/followers').json();
+  // console.log(seguidores)
+  const seguidores = []
+  React.useEffect(() => {
+    fetch('http://api.github.com/users/peas/followers')
+    .then(resposta => {
+      return resposta.json()
+    })
+    .then(seguidores => {
+      console.log(seguidores)
+    })
+  })
 
   return (
     <>
@@ -112,41 +171,9 @@ export default function Home() {
           className="profileRelationsArea"
           style={{ gridArea: 'profileRelationsArea' }}
         >
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Comunidades <span>({comunidades.length})</span>
-            </h2>
-            <ul>
-              {comunidades.map((itemAtual) => {
-                return (
-                  <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}>
-                      <img src={itemAtual.image} />
-                      <span>{itemAtual.title}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Pessoas da comunidade <span>({pessoasFavoritas.length})</span>
-            </h2>
-
-            <ul>
-              {pessoasFavoritas.map((itemAtual) => {
-                return (
-                  <li key={itemAtual}>
-                    <a href={`/users/${itemAtual}`}>
-                      <img src={`https://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ProfileRelationsBox title={'Seguidores'} items={seguidores} />
+          <ProfileRelations array={comunidades} title={'Comunidades'} />
+          <ProfileRelations array={pessoasFavoritas} title={'Pessoas da comunidade'} />
         </div>
       </MainGrid>
     </>

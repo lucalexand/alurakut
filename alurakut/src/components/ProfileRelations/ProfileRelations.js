@@ -50,3 +50,33 @@ export const ProfileRelationsBoxWrapper = styled(Box)`
     }
   }
 `;
+
+export const ProfileRelations = ({ array, title }) => {
+  return(
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {title} <span>({array.length})</span>
+      </h2>
+      <ul>
+        {array.map((itemAtual) => {
+          return (
+            <li key={itemAtual.id}>
+              <a href={`/users/${itemAtual.title}`}>
+                <img src={itemAtual.image} />
+                <span>{itemAtual.title}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
+
+
+//index
+
+// import { ProfileRelations} from './ProfileRelations';
+
+// export default ProfileRelations;
