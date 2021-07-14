@@ -26,6 +26,17 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
 
+  /* @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #010101;
+      color: #f0ece2;
+    }
+
+    img {
+      filter: brightness(0.9);
+    }
+  } */
+
   ${AlurakutStyles}
 `;
 
