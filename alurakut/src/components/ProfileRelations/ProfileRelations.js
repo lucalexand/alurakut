@@ -51,14 +51,14 @@ export const ProfileRelationsBoxWrapper = styled(Box)`
   }
 `;
 
-export const ProfileRelations = ({ array, title }) => {
-  return(
+export const ProfileRelations = ({ title, items }) => {
+  return (
     <ProfileRelationsBoxWrapper>
       <h2 className="smallTitle">
-        {title} <span>({array.length})</span>
+        {title} <span>({items.length})</span>
       </h2>
       <ul>
-        {array.map((itemAtual) => {
+        {items.slice(0, 6).map((itemAtual) => {
           return (
             <li key={itemAtual.id}>
               <a href={`/users/${itemAtual.title}`}>
@@ -70,11 +70,19 @@ export const ProfileRelations = ({ array, title }) => {
         })}
       </ul>
     </ProfileRelationsBoxWrapper>
-  )
-}
+  );
+};
 
-
-
+const BoxLine = ({ item }) => {
+  return (
+    <li key={item.id}>
+      <a href={`/users/${item.title}`}>
+        <img src={item.image} />
+        <span>{item.title}</span>
+      </a>
+    </li>
+  );
+};
 //index
 
 // import { ProfileRelations} from './ProfileRelations';

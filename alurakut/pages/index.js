@@ -1,26 +1,29 @@
 import React from 'react';
 import Box from '../src/components/Box';
 import MainGrid from '../src/components/MainGrid';
-import {ProfileRelations, ProfileRelationsBoxWrapper} from '../src/components/ProfileRelations/ProfileRelations';
+import {
+  ProfileRelations,
+  ProfileRelationsBoxWrapper,
+} from '../src/components/ProfileRelations/ProfileRelations';
 import {
   AlurakutMenu,
   AlurakutProfileSidebarMenuDefault,
   OrkutNostalgicIconSet,
 } from '../src/lib/AlurakutCommons';
 
-function ProfileSidebar(prop) {
+function ProfileSidebar({ githubUser }) {
   return (
     <Box as="aside">
       <img
-        src={`https://github.com/${prop.githubUser}.png`}
+        src={`https://github.com/${githubUser}.png`}
         style={{ borderRadius: '8px' }}
       />
 
       <hr />
 
       <p>
-        <a className="boxLink" href={`https://github.com/${prop.githubUser}`}>
-          @{prop.githubUser}
+        <a className="boxLink" href={`https://github.com/${githubUser}`}>
+          @{githubUser}
         </a>
       </p>
 
@@ -31,26 +34,33 @@ function ProfileSidebar(prop) {
   );
 }
 
-function ProfileRelationsBox({ title, items}) {
+function ProfileRelationsBox({ title, items }) {
+  // const array = [];
+  //https://stackoverflow.com/questions/42739256/how-get-random-item-from-es6-map-or-set
+  // //const getRandomItem = iterable => iterable.get([...iterable.keys()][Math.floor(Math.random() * iterable.size)])
+  // for (let i = 0; i < 6; i++) {
+  //   array.push(items[Math.floor(Math.random() * items.length)]);
+  // }
+
   return (
     <ProfileRelationsBoxWrapper>
       <h2 className="smallTitle">
         {title} <span>({items.length})</span>
       </h2>
-      {/* <ul>
-        {array.map((itemAtual) => {
+      <ul>
+        {items.slice(0, 6).map((itemAtual) => {
           return (
             <li key={itemAtual.id}>
-              <a href={`/users/${itemAtual.title}`}>
-                <img src={itemAtual.image} />
-                <span>{itemAtual.title}</span>
+              <a href={`/users/${itemAtual.login}`}>
+                <img src={itemAtual.avatar_url} />
+                <span>{itemAtual.login}</span>
               </a>
             </li>
           );
         })}
-      </ul> */}
+      </ul>
     </ProfileRelationsBoxWrapper>
-  )
+  );
 }
 
 export default function Home() {
@@ -64,49 +74,49 @@ export default function Home() {
   ]);
   const pessoasFavoritas = [
     {
-      id: new Date().toISOString(),
+      id: Math.floor(Math.random() * 100000),
       title: 'juunegreiros',
-      image: `https://github.com/juunegreiros.png`
+      image: `https://github.com/juunegreiros.png`,
     },
     {
-      id: new Date().toISOString(),
+      id: Math.floor(Math.random() * 100000),
       title: 'omariosouto',
-      image: `https://github.com/omariosouto.png`
+      image: `https://github.com/omariosouto.png`,
     },
     {
-      id: new Date().toISOString(),
+      id: Math.floor(Math.random() * 100000),
       title: 'peas',
-      image: `https://github.com/peas.png`
+      image: `https://github.com/peas.png`,
     },
     {
-      id: new Date().toISOString(),
+      id: Math.floor(Math.random() * 100000),
       title: 'rafaballerini',
-      image: `https://github.com/rafaballerini.png`
+      image: `https://github.com/rafaballerini.png`,
     },
     {
-      id: new Date().toISOString(),
+      id: Math.floor(Math.random() * 100000),
       title: 'marcobrunodev',
-      image: `https://github.com/marcobrunodev.png`
+      image: `https://github.com/marcobrunodev.png`,
     },
     {
-      id: new Date().toISOString(),
+      id: Math.floor(Math.random() * 100000),
       title: 'felipefialho',
-      image: `https://github.com/felipefialho.png`
-    }
+      image: `https://github.com/felipefialho.png`,
+    },
   ];
 
   // const seguidores = await fetch('http://api.github.com/users/peas/followers').json();
   // console.log(seguidores)
-  const seguidores = []
+  const [seguidores, setSeguidores] = React.useState([]);
   React.useEffect(() => {
     fetch('http://api.github.com/users/peas/followers')
-    .then(resposta => {
-      return resposta.json()
-    })
-    .then(seguidores => {
-      console.log(seguidores)
-    })
-  })
+      .then((resposta) => {
+        return resposta.json();
+      })
+      .then((seguidores) => {
+        setSeguidores(seguidores);
+      });
+  }, []);
 
   return (
     <>
@@ -172,8 +182,11 @@ export default function Home() {
           style={{ gridArea: 'profileRelationsArea' }}
         >
           <ProfileRelationsBox title={'Seguidores'} items={seguidores} />
-          <ProfileRelations array={comunidades} title={'Comunidades'} />
-          <ProfileRelations array={pessoasFavoritas} title={'Pessoas da comunidade'} />
+          <ProfileRelations title={'Comunidades'} items={comunidades} />
+          <ProfileRelations
+            title={'Pessoas da comunidade'}
+            items={pessoasFavoritas}
+          />
         </div>
       </MainGrid>
     </>
