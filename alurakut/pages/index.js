@@ -65,43 +65,37 @@ function ProfileRelationsBox({ title, items }) {
 
 export default function Home() {
   const githubUser = 'lucalexand';
-  const [comunidades, setComunidades] = React.useState([
-    {
-      id: '4164132564162313',
-      title: 'Eu odeio acordar cedo',
-      image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg',
-    },
-  ]);
+  const [comunidades, setComunidades] = React.useState([]);
   const pessoasFavoritas = [
     {
       id: Math.floor(Math.random() * 100000),
       title: 'juunegreiros',
-      image: `https://github.com/juunegreiros.png`,
+      imageUrl: `https://github.com/juunegreiros.png`,
     },
     {
       id: Math.floor(Math.random() * 100000),
       title: 'omariosouto',
-      image: `https://github.com/omariosouto.png`,
+      imageUrl: `https://github.com/omariosouto.png`,
     },
     {
       id: Math.floor(Math.random() * 100000),
       title: 'peas',
-      image: `https://github.com/peas.png`,
+      imageUrl: `https://github.com/peas.png`,
     },
     {
       id: Math.floor(Math.random() * 100000),
       title: 'rafaballerini',
-      image: `https://github.com/rafaballerini.png`,
+      imageUrl: `https://github.com/rafaballerini.png`,
     },
     {
       id: Math.floor(Math.random() * 100000),
       title: 'marcobrunodev',
-      image: `https://github.com/marcobrunodev.png`,
+      imageUrl: `https://github.com/marcobrunodev.png`,
     },
     {
       id: Math.floor(Math.random() * 100000),
       title: 'felipefialho',
-      image: `https://github.com/felipefialho.png`,
+      imageUrl: `https://github.com/felipefialho.png`,
     },
   ];
 
@@ -110,11 +104,35 @@ export default function Home() {
   const [seguidores, setSeguidores] = React.useState([]);
   React.useEffect(() => {
     fetch('http://api.github.com/users/peas/followers')
-      .then((resposta) => {
-        return resposta.json();
+      .then((resposta) => resposta.json())
+      .then((seguidores) => setSeguidores(seguidores));
+
+    const token = '0a68ba65cab36f0040da99effe268a';
+    //API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+          allCommunities { 
+            title
+            id
+            imageUrl
+            creatorSlug
+          }
+        }`,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setComunidades(res.data.allCommunities);
       })
-      .then((seguidores) => {
-        setSeguidores(seguidores);
+      .catch((e) => {
+        console.error(e);
       });
   }, []);
 

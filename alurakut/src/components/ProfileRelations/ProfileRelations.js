@@ -58,12 +58,12 @@ export const ProfileRelations = ({ title, items }) => {
         {title} <span>({items.length})</span>
       </h2>
       <ul>
-        {items.slice(0, 6).map((itemAtual) => {
+        {items.slice(0, 6).map((item) => {
           return (
-            <li key={itemAtual.id}>
-              <a href={`/users/${itemAtual.title}`}>
-                <img src={itemAtual.image} />
-                <span>{itemAtual.title}</span>
+            <li key={item.id}>
+              <a href={`/users/${item.title}`}>
+                <img src={item.imageUrl} />
+                <span>{item.title}</span>
               </a>
             </li>
           );
