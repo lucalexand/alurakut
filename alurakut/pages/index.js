@@ -166,15 +166,25 @@ export default function Home() {
                 const dadosDoForm = new FormData(e.target);
 
                 const comunidade = {
-                  id: new Date().toISOString(),
                   title: dadosDoForm.get('title'),
-                  image: `https://picsum.photos/300?random=${Math.floor(
+                  imageUrl: `https://picsum.photos/300?random=${Math.floor(
                     Math.random() * 100000
                   )}`,
+                  creatorSlug: githubUser
                 };
-                console.log(comunidade);
+                
+                fetch('/api/comunidades', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(comunidade)
+                })
+                .then( async (res) => {
+                  const { registroCriado:comunidade } = await res.json();
+                  setComunidades([...comunidades, comunidade]);
+                })
 
-                setComunidades([...comunidades, comunidade]);
               }}
             >
               <div>
